@@ -140,8 +140,10 @@
       "user": "普通用户"
     },
     "placeholder": {
+      "tenantId": "请输入您的租户编号",
       "username": "请输入账号",
       "password": "请输入密码",
+      "code": "请输入验证码",
       "slider": "请拖动滑块完成验证"
     },
     "sliderText": "按住滑块拖动",

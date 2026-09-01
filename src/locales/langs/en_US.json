@@ -140,8 +140,10 @@
       "user": "User"
     },
     "placeholder": {
+      "tenantId": "Please enter your tenant id",
       "username": "Please enter your account",
       "password": "Please enter your password",
+      "code": "Please enter a verification code",
       "slider": "Please slide to verify"
     },
     "sliderText": "Please slide to verify",

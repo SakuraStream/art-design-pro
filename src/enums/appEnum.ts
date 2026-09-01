@@ -65,9 +65,9 @@ export enum MenuWidth {
  */
 export enum LanguageEnum {
   /** 中文 */
-  ZH = 'zh',
+  zh_CN = 'zh_CN',
   /** 英文 */
-  EN = 'en'
+  en_US = 'en_US'
 }
 
 /**

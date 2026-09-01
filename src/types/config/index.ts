@@ -164,6 +164,16 @@ export interface EnvConfig {
   VITE_USE_GZIP?: string
   // 是否开启 CDN
   VITE_USE_CDN?: string
+
+  VITE_APP_BASE_API: string
+  // 是否开启接口加密
+  VITE_APP_ENCRYPT: string
+  // 接口请求加密公钥
+  VITE_APP_RSA_PUBLIC_KEY: string
+  // 接口响应解密私钥
+  VITE_APP_RSA_PRIVATE_KEY: string
+  // 客户端id
+  VITE_APP_CLIENT_ID: string
 }
 
 // 应用配置

@@ -42,6 +42,10 @@ import { setPageTitle } from '@/utils/router'
 import { resetRouterState } from '@/router/guards/beforeEach'
 import { useMenuStore } from './menu'
 import { StorageConfig } from '@/utils/storage/storage-config'
+import { getToken, removeToken, setToken as setAuthToken } from '@/utils/auth'
+import { login as loginApi, logout as logoutApi, getInfo as getLoginUserInfo } from '@/api/login'
+import { LoginData } from '@/api/types'
+import defAva from '@/assets/images/user/avatar.webp'
 
 /**
  * 用户状态管理
@@ -50,8 +54,17 @@ import { StorageConfig } from '@/utils/storage/storage-config'
 export const useUserStore = defineStore(
   'userStore',
   () => {
+    const token = ref(getToken())
+    const name = ref('')
+    const nickname = ref('')
+    const userId = ref<string | number>('')
+    const tenantId = ref<string>('')
+    const avatar = ref('')
+    const roles = ref<Array<string>>([]) // 用户角色编码集合 → 判断路由权限
+    const permissions = ref<Array<string>>([]) // 用户权限编码集合 → 判断按钮权限
+
     // 语言设置
-    const language = ref(LanguageEnum.ZH)
+    const language = ref(LanguageEnum.zh_CN)
     // 登录状态
     const isLogin = ref(false)
     // 锁屏状态
@@ -203,7 +216,54 @@ export const useUserStore = defineStore(
       localStorage.removeItem(StorageConfig.LAST_USER_ID_KEY)
     }
 
+    /**
+     * 登录
+     * @param userInfo
+     * @returns
+     */
+    const login = async (userInfo: LoginData): Promise<void> => {
+      const res = await loginApi(userInfo)
+      const data = res.data
+      setAuthToken(data.access_token)
+      token.value = data.access_token
+    }
+
+    // 注销
+    const logout = async (): Promise<void> => {
+      await logoutApi()
+      token.value = ''
+      roles.value = []
+      permissions.value = []
+      removeToken()
+    }
+
+    // 获取用户信息
+    const getInfo = async (): Promise<void> => {
+      const res = await getLoginUserInfo()
+      const data = res.data
+      const user = data.user
+      const profile = user.avatar == '' || user.avatar == null ? defAva : user.avatar
+
+      if (data.roles && data.roles.length > 0) {
+        // 验证返回的roles是否是一个非空数组
+        roles.value = data.roles
+        permissions.value = data.permissions
+      } else {
+        roles.value = ['ROLE_DEFAULT']
+      }
+      name.value = user.userName
+      nickname.value = user.nickName
+      avatar.value = profile
+      userId.value = user.userId
+      tenantId.value = user.tenantId
+    }
+
     return {
+      roles,
+      permissions,
+      login,
+      logout,
+      getInfo,
       language,
       isLogin,
       isLock,

@@ -429,8 +429,8 @@ export const upgradeLogList = ref<UpgradeLog[]>([])
 // 清理语言文件
 async function cleanLanguageFiles() {
   const languageFiles = [
-    { path: 'src/locales/langs/zh.json', name: '中文语言文件' },
-    { path: 'src/locales/langs/en.json', name: '英文语言文件' }
+    { path: 'src/locales/langs/zh_CN.json', name: '中文语言文件' },
+    { path: 'src/locales/langs/en_US.json', name: '英文语言文件' }
   ]
 
   for (const { path: langPath, name } of languageFiles) {
